@@ -5,6 +5,7 @@ Arch:=x86_64 # Used By gen-rc task
 
 CXX:=g++
 CC:=gcc
+PYTHON=python3
 STD:=c99
 CXX_STD:=c++11
 CCFLAGS:=-Iinclude/ -Ilibs/imgui/ -Ilibs/ -Wall -MMD -MP -DCS_VERSION_MAJOR=$(MajVer) -DCS_VERSION_MINOR=$(MinVer) -DCS_VERSION_PATCH=$(PatVer) -DSDL_MAIN_HANDLED=1 -DIMGUI_DISABLE_OBSOLETE_FUNCTIONS=1 -DLOG_USE_COLOR=1
@@ -115,14 +116,14 @@ clean:
 
 # make gen-rc Arch=x86_64(or i686)
 gen-rc:
-	@python3 tools/create_rc.py --arch=$(Arch) --majver=$(MajVer) --minver=$(MinVer) --patver=$(PatVer)
+	@$(PYTHON) tools/create_rc.py --arch=$(Arch) --majver=$(MajVer) --minver=$(MinVer) --patver=$(PatVer)
 	@echo Generated RC...
 
 # make gen-assets
 gen-assets:
-	@python3 tools/create_icons.py
+	@$(PYTHON) tools/create_icons.py
 	@echo Generated Icons...
-	@python3 tools/create_assets.py
+	@$(PYTHON) tools/create_assets.py
 	@echo Generated Assets...
 
 # make appimage

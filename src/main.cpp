@@ -12,8 +12,8 @@
 #include <string.h>
 #include <limits.h>
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_thread.h>
+#include <SDL.h>
+#include <SDL_thread.h>
 
 #include "pfd.h"
 #include "imgui.h"

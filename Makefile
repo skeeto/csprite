@@ -8,8 +8,8 @@ CC:=cc
 PYTHON=python3
 STD:=c99
 CXX_STD:=c++11
-CCFLAGS:=-Iinclude/ -Ilibs/imgui/ -Ilibs/ -Wall -MMD -MP -DCS_VERSION_MAJOR=$(MajVer) -DCS_VERSION_MINOR=$(MinVer) -DCS_VERSION_PATCH=$(PatVer) -DSDL_MAIN_HANDLED=1 -DIMGUI_DISABLE_OBSOLETE_FUNCTIONS=1 -DLOG_USE_COLOR=1
-CFLAGS:=
+CCFLAGS:=-Iinclude -Ilibs/imgui -Ilibs -Wall -MMD -MP -DCS_VERSION_MAJOR=$(MajVer) -DCS_VERSION_MINOR=$(MinVer) -DCS_VERSION_PATCH=$(PatVer) -DIMGUI_DISABLE_OBSOLETE_FUNCTIONS=1 -DLOG_USE_COLOR=1 $$(sdl2-config --cflags)
+CFLAGS:=$$(sdl2-config --cflags)
 LFLAGS:=
 
 SDL2_STATIC_LINK:=1
@@ -41,9 +41,9 @@ endif
 
 ifeq ($(OS),Windows_NT)
 	ifeq ($(SDL2_STATIC_LINK),1)
-		LFLAGS+=-static-libstdc++ -Wl,-Bstatic -lSDL2main -lSDL2 -Wl,-Bdynamic
+		LFLAGS+=-static-libstdc++ -Wl,-Bstatic $$(sdl2-config --static-libs) -Wl,-Bdynamic
 	else
-		LFLAGS+=-lSDL2main -lSDL2
+		LFLAGS+=$$(sdl2-config --libs)
 	endif
 	LFLAGS+=$(addprefix -l,opengl32 winmm gdi32 imm32 ole32 oleaut32 shell32 version uuid setupapi)
 	ifeq ($(BUILD_TARGET),debug)
@@ -60,9 +60,9 @@ else
 
 	ifeq ($(UNAME_S),Linux)
 		ifeq ($(SDL2_STATIC_LINK),1)
-			LFLAGS+=-Wl,-Bstatic -lSDL2 -Wl,-Bdynamic -lX11 -lXext -lXi -lXfixes -lXrandr -lXcursor
+			LFLAGS+=-Wl,-Bstatic $$(sdl2-config --static-libs) -Wl,-Bdynamic -lX11 -lXext -lXi -lXfixes -lXrandr -lXcursor
 		else
-			LFLAGS+=-lSDL2
+			LFLAGS+=$$(sdl2-config --libs)
 		endif
 
 		_libs+=dl
@@ -75,7 +75,7 @@ else
 		endif
 	endif
 	ifeq ($(UNAME_S),Darwin)
-		LFLAGS+=$(addprefix -framework , OpenGL Cocoa) -lSDL2
+		LFLAGS+=$(addprefix -framework , OpenGL Cocoa) $$(sdl2-config --libs)
 	endif
 
 	LFLAGS+=$(addprefix -l,$(_libs))

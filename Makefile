@@ -3,8 +3,8 @@ MinVer:=0
 PatVer:=0
 Arch:=x86_64 # Used By gen-rc task
 
-CXX:=g++
-CC:=gcc
+CXX:=c++
+CC:=cc
 PYTHON=python3
 STD:=c99
 CXX_STD:=c++11
